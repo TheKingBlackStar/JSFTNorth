@@ -42,11 +42,15 @@ header {
     color: #fff;
     text-decoration: none;
     font-size: 18px;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
+    padding: 5px 10px; /* Add padding for a better hover effect */
   }
   
+  /* Enhanced Hover Effect */
   .navbar-menu li a:hover {
-    color: #ddd;
+    color: #ddd; /* Change text color */
+    background-color: #555; /* Add a background color */
+    border-radius: 5px; /* Optional: Round corners for the background */
   }
   
   
@@ -153,12 +157,12 @@ header {
   }
   
   .photos img {
-    max-width: 200px;
+    max-width: 700px;
     border-radius: 50%;
   }
 
   /* Leader Section Styles */
-.leader-section {
+  .leader-section {
     text-align: center;
     padding: 60px 0;
     
@@ -169,26 +173,127 @@ header {
     margin-bottom: 20px;
     /* Use box-shadow to create a custom underline */
     }
-  .leaders-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columns */
-    gap: 20px;
-    margin-top: 20px;
+    .leaders-grid {
+      display: flex; /* Enable Flexbox */
+      flex-wrap: wrap; /* Allow items to wrap to the next line */
+      gap: 20px; /* Space between items */
+      margin-top: 10px; /* Top margin */
+      justify-content: center; /* Center items horizontally */
+      align-items: center; /* Center items vertically */
+    }
     
-  }
+    /*.leaders-grid img {
+      flex: 0 0 50%; /* Do not grow or shrink, take up 50% of the width */
+    /*}*/
   
   .leader {
+    position: relative;
     text-align: center;
+    
   }
 
-
+  
+ 
 
   .leader img {
-    max-width: 75%; /* Adjust the size as needed */
-    border-radius: 500%;
+    max-width: 700%; /* Adjust the size as needed */
+    border-radius: 700%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin: 10px; /* Add margin to separate sub-leaders */
+    margin: 20px; /* Add margin to separate sub-leaders*/
   }
+ 
+  
+  .additional-image,
+.additional-image2,
+.additional-image3 {
+  display: none; /* Hide by default */
+  position: absolute; /* Absolute position */
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%); /* Center vertically with respect to the leader image */
+  z-index: 1000; /* High z-index to ensure it's above everything else */
+  text-align: center; /* Center align text */
+  /* Set a fixed width if necessary */
+  width: 200px; /* Adjust as needed */
+  
+  /* Set the height to fit the content */
+}
+
+.additional-image img,
+.additional-image2 img,
+.additional-image3 img {
+  border-radius: 70%; /* Makes the additional image round */
+  width: 100%; /* Make the image take the full width of the container */
+  height: auto; /* Maintain the aspect ratio */
+  
+  object-fit: cover; /* Ensures the image covers the circle properly */
+}
+
+/* Positioned to the left of the leader image */
+.additional-image {
+  top: 50%; /* Align vertically */
+  left: -220px; /* Position to the left */
+  transform: translateY(-50%); /* Center vertically */
+  border-radius: 50%;
+}
+
+/* Positioned to the right of the leader image */
+.additional-image2 {
+  top: 50%; /* Align vertically */
+  left: 100%; /* Position to the right */
+  transform: translateY(-50%); /* Center vertically */
+  
+}
+
+.additional-image3 {
+  top: 50%; /* Align vertically */
+  left: 100%; /* Position to the right */
+  transform: translateY(-50%); /* Center vertically */
+  
+}
+
+.leader:hover .additional-image,
+.leader:hover .additional-image2,
+.leader:hover .additional-image3 {
+  display: flex; /* Show on hover */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Styling for the text in the additional images */
+.additional-image p,
+.additional-image2 p,
+.additional-image3 p {
+  margin-top: 10px; /* Add space above the text */
+  color: #fff; /* Text color */
+  /* Add any other text styling as needed */
+}
+
+
+
+.additional-image3 img {
+  border-radius: 50%; /* Makes the additional image round */
+  width: 100%; /* Make the image take the full width of the container */
+  height: auto; /* Maintain the aspect ratio */
+  object-fit: cover; /* Ensures the image covers the circle properly */
+}
+
+
+
+/* Styling for the text in the additional images */
+.additional-image3 p {
+  margin-top: 10px; /* Add space above the text */
+  color: #fff; /* Text color */
+  /* Add any other text styling as needed */
+}
+
+  
+
+
+  
+  
+  
+  
   
   .leader p {
     margin-top: 10px;
@@ -230,6 +335,7 @@ header {
   }
   
   .contact-section form {
+    margin-top: -1000px;
     display: flex;
     flex-direction: column;
     max-width: 400px;
@@ -239,7 +345,7 @@ header {
   .contact-section input,
   .contact-section textarea {
     margin-bottom: 10px;
-    padding: 10px;
+    padding: 20px;
   }
   
   .contact-section button {
@@ -253,16 +359,44 @@ header {
 /* Center Video Section */
 .video-section {
     text-align: center;
-    padding: 60px 0;
+    padding: 0px 0;
+    margin-bottom: 5px; /* Adjusted based on your requirement */
+
+    
   }
   .VF {
     font-family: 'Edwardian Script ITC', cursive;
     font-size: 50px;
-   
+    height: 500px;
+    width: 500px;
+    margin: auto; /* Centers horizontally if the parent has a defined width */
+    position: relative;
+    
+    transform: translateY(75%); /* Centers vertically */
   }
+  
   .video-container {
     display: inline-block;
   }
+  
+  
+  .video-container {
+    position: relative;
+    width: 80%; /* Adjust this to your preference */
+    height: 0;
+    padding-top: 56.25%; /* Aspect ratio for 16:9 video */
+    margin: auto; /* Centers the container */
+    
+  }
+  
+  #embedvidio-9b141324-a449-4b8b-ba83-5697dcad9353 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
  /* Styles for the Sub Leaders section */
  #sub-leaders {
     text-align: center;
@@ -291,10 +425,10 @@ header {
   }
 
   .sub-leader img {
-    max-width: 55%; /* Adjust the size as needed */
-    border-radius: 50%;
+     /* Adjust the size as needed */
+    border-radius: 500%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin: 10px; /* Add margin to separate sub-leaders */
+    margin: 20px; /* Add margin to separate sub-leaders */
   }
   .sub-leader p {
     font-weight: bold;
@@ -317,7 +451,7 @@ header {
 }
 
 .video-container iframe {
-    position: absolute;
+    position:relative;
     top: 0;
     left: 0;
     width: 100%;
@@ -332,3 +466,25 @@ header {
     padding: 10px 0;
   }
   
+  /* Default styles for mobile (images stacked) */
+.image-container {
+  display: block;
+}
+
+.image-container img {
+  width: 100%;
+  /* other styles */
+}
+
+/* Styles for larger screens (images side by side) */
+@media screen and (min-width: 768px) {
+  .image-container {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .image-container img {
+    width: 48%; /* Adjust the width as needed */
+    /* other styles */
+  }
+}
