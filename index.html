@@ -59,45 +59,68 @@
           <!--Over seer and apostle-->
           <div class="leader">
             <p>Apostle</p>
-            <img src="./Assets/Blank.jpg" alt="Cowart">
+            <img src="./Assets/Apostle.jpg" alt="Cowart" height="400" width="400">
             <p>Clayton Cowart</p>
+            <!-- Container for the second image -->
+            <div class="additional-image">
+              <p>First Lady</p>
+              <img src="./Assets/Apostle and First Lady.jpg" alt="Additional Info" />
+              <p>First Lady Cowart</p>
+            </div>
           </div>
+          
+          
           <div class="leader">
             <p></p>
             <p></p>
           </div>
           <div class="leader">
             <p>Bishop</p>
-            <img src="./Assets/Blank.jpg" alt="Founder">
+            <img src="./Assets/Bishop.jpeg" alt="Founder"height="400" width="400">
             <p>Adrian Shaw</p>
+             <!-- Container for the second image -->
+             <div class="additional-image2">
+              <p>First Lady</p>
+              <img src="./Assets/Bishop and first lady.jpg" alt="Additional Info" />
+              <p>First Lady Shaw</p>
+            </div>
           </div>
           <div class="leader">
             <p></p>
             <p></p>
           </div>
+        </div>
+        <div class="leaders-grid">
+        <div class="leader">
           <!--Pastor Now-->
           <div class="leader">
             <p>Pastor</p>
-            <img src="./Assets/IMG_1413.JPG" alt="Pastor Edward A Gresham Jr">
+            <img src="./Assets/IMG_1413.JPG" alt="Pastor Edward A Gresham Jr" height="400" width="400">
             <p>Edward A Gresham Jr</p>
+            <div class="additional-image3">
+              <p>First Lady</p>
+              <img src="./Assets/First lady and Paster.jpg" alt="Additional Info" />
+              <p>First Lady Gresham</p>
+            </div>
           </div>
+        </div>
         </div>
           <section id="sub-leaders" class="leader-section">
             <h2><span class="underline">Ministry</span></h2>      <!-- Add more sub-leader divs as needed -->
             <!-- Sub Leader 1 -->
             <div class="sub-leaders-grid">
               <div class="sub-leader">
-                <img src="./Assets/Keith.jpeg" alt="Sub Leader 1">
+                <img src="./Assets/Keith.jpeg" alt="Sub Leader 1" width="350" height="300">
                 <p>Youth Leader / Media Leader</p>
               </div>
               <!-- Sub Leader 2 -->
               <div class="sub-leader">
-                <img src="./Assets/Kim and husband.jpeg" alt="Sub Leader 2">
+                <img src="./Assets/Kim and husband.jpeg" alt="Sub Leader 2" width="350" height="300">
                 <p>Finance Leader</p>
               </div>
               <!-- Sub Leader 3 -->
               <div class="sub-leader">
-                <img src="./Assets/Blank.jpg" alt="Sub Leader 3">
+                <img src="./Assets/Bro Phillip.png" alt="Sub Leader 3" width="350" height="300">
                 <p>Sound Team Leader</p>
               </div>
             </div>
@@ -129,14 +152,23 @@
     <section id="live-video" class="video-section">
       <h2 class="VF"><span class="underline">Live Video</span></h2>
       <div class="video-container">
-          <iframe 
-              src="rtmp://live.restream.io/live" 
-              frameborder="0" 
-              allowfullscreen 
-              title="Live Video Stream">
-          </iframe>
+        <!-- EmbedVidio Script -->
+        <script type="text/javascript">
+          (function(d, s, id){
+              var js, wjs = d.getElementsByTagName(s)[0]; 
+              if (d.getElementById(id)) {return;} 
+              js = d.createElement(s); 
+              js.id = id; 
+              js.src = "https://www.embedvid.io/embedjs/embedvidio.js"; 
+              wjs.parentNode.insertBefore(js, wjs);
+          }(document, "script", "embedvidio-9b141324-a449-4b8b-ba83-5697dcad9353-widget"));
+        </script>
+        <!-- EmbedVidio Container -->
+        <div id="embedvidio-9b141324-a449-4b8b-ba83-5697dcad9353"></div>
       </div>
-  </section>
+    </section>
+    
+    
   
 
 
