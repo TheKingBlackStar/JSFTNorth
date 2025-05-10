@@ -1,0 +1,372 @@
+/* style.css - JSTF North Overhaul */
+
+/* --- Color Palette --- */
+:root {
+    --primary-purple: #703ABD; /* A welcoming, medium purple */
+    --secondary-purple: #50208C; /* A darker purple for depth and headings */
+    --light-purple-bg: #E9D5FF; /* Light lavender for backgrounds/accents */
+    --accent-gold: #D4AF37; /* A tasteful, rich gold (e.g., for highlights, buttons) */
+    --accent-gold-darker: #B08D57; /* A slightly darker, more antique gold for text or borders */
+    --white: #FFFFFF;
+    --off-white-bg: #f8f9fa; /* Bootstrap's light gray, good for section backgrounds */
+    --dark-text: #343A40; /* Dark gray for body text for readability */
+    --light-text-on-dark: #f8f9fa; /* Light text for use on dark purple/gold backgrounds */
+    --link-color: var(--primary-purple);
+    --link-hover-color: var(--secondary-purple);
+    --card-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    --card-hover-shadow: 0 0.75rem 1.75rem rgba(0, 0, 0, 0.15);
+}
+
+/* --- Typography --- */
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: var(--dark-text);
+    line-height: 1.7;
+    font-size: 1rem; 
+    background-color: var(--white); 
+}
+
+h1, h2, h3, h4, h5, h6,
+.church-brand-text,
+.footer-brand-text {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: var(--secondary-purple);
+}
+
+.display-3 { font-size: calc(1.525rem + 3.3vw); font-weight: 700; }
+.display-4 { font-size: calc(1.475rem + 2.7vw); font-weight: 700; }
+.display-5 { font-size: calc(1.425rem + 2.1vw); font-weight: 600; }
+
+
+.section-title {
+    color: var(--primary-purple);
+    font-weight: 700;
+    font-size: 2.25rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.75rem;
+}
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 4px;
+    background-color: var(--accent-gold);
+    border-radius: 2px;
+}
+
+.section-title-gold {
+    color: var(--accent-gold-darker);
+    font-weight: 700;
+    font-size: 2.25rem;
+    margin-bottom: 1rem;
+    position: relative;
+    padding-bottom: 0.75rem;
+}
+.section-title-gold::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 4px;
+    background-color: var(--primary-purple);
+    border-radius: 2px;
+}
+
+.section-subtitle {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: var(--secondary-purple);
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+    transition: color 0.2s ease-in-out, text-decoration-color 0.2s ease-in-out;
+}
+a:hover {
+    color: var(--link-hover-color);
+    text-decoration: underline;
+    text-decoration-color: var(--accent-gold);
+}
+.link-primary-hover:hover {
+    color: var(--primary-purple) !important;
+}
+
+/* --- General Layout & Spacing --- */
+.py-5 { padding-top: 4rem !important; padding-bottom: 4rem !important; }
+.my-5 { margin-top: 4rem !important; margin-bottom: 4rem !important; }
+
+.gold-hr {
+    border: 0;
+    height: 2px;
+    background-image: linear-gradient(to right, rgba(212, 175, 55, 0), rgba(212, 175, 55, 0.85), rgba(212, 175, 55, 0));
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+.gold-hr.short-hr {
+    max-width: 80px;
+    margin-left: 0;
+    margin-right: auto;
+    background-image: linear-gradient(to right, var(--accent-gold), var(--accent-gold-darker));
+    height: 3px;
+}
+
+/* --- Navbar --- */
+.main-navbar {
+    background-color: var(--white) !important;
+    border-bottom: 1px solid #e0e0e0;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+.church-brand-text {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-purple) !important;
+    letter-spacing: -0.5px;
+}
+.main-navbar .nav-link {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    color: var(--dark-text);
+    padding: 0.8rem 1rem;
+    transition: color 0.2s ease, background-color 0.2s ease;
+    border-radius: 0.25rem;
+}
+.main-navbar .nav-link:hover, .main-navbar .nav-link:focus {
+    color: var(--primary-purple);
+    background-color: rgba(112, 58, 189, 0.05);
+}
+.main-navbar .nav-link.active {
+    color: var(--primary-purple);
+    font-weight: 600;
+}
+.navbar-toggler { border-color: rgba(112, 58, 189, 0.5); }
+.navbar-toggler-icon { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(112, 58, 189, 0.9)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); }
+
+/* --- Hero Section (Homepage) --- */
+.hero-section {
+    background: linear-gradient(rgba(80, 32, 140, 0.75), rgba(112, 58, 189, 0.85)), url('https://via.placeholder.com/1920x800/BFACE2/FFFFFF?text=Welcoming+Church+Background') no-repeat center center;
+    background-size: cover;
+    min-height: 80vh;
+    position: relative;
+}
+.hero-content { position: relative; z-index: 2; padding: 2rem; border-radius: 0.5rem; }
+.hero-section h1 { color: var(--white); text-shadow: 2px 2px 5px rgba(0,0,0,0.6); }
+.hero-section .lead { color: var(--light-purple-bg); font-size: 1.3rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
+
+/* --- Page Headers (Inner Pages) --- */
+.page-header {
+    background: linear-gradient(rgba(112, 58, 189, 0.85), rgba(80, 32, 140, 0.92)), url('https://via.placeholder.com/1920x400/BFACE2/FFFFFF?text=JSTF+North+Banner') no-repeat center center;
+    background-size: cover;
+    min-height: 40vh; padding: 3rem 0; margin-bottom: 3rem;
+}
+.page-header h1 { color: var(--white); text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
+.page-header .lead { color: var(--light-purple-bg); text-shadow: 1px 1px 2px rgba(0,0,0,0.4); }
+
+/* --- Buttons --- */
+.btn { padding: 0.75rem 1.75rem; font-family: 'Poppins', sans-serif; font-weight: 500; border-radius: 50px; transition: all 0.3s ease-in-out; letter-spacing: 0.5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+.btn-lg { padding: 0.9rem 2rem; font-size: 1.1rem; }
+.btn-primary { background-color: var(--primary-purple); border-color: var(--primary-purple); color: var(--white); }
+.btn-primary:hover { background-color: var(--secondary-purple); border-color: var(--secondary-purple); transform: translateY(-3px); box-shadow: 0 6px 10px rgba(0,0,0,0.15); }
+.btn-secondary { background-color: var(--accent-gold); border-color: var(--accent-gold); color: var(--dark-text); }
+.btn-secondary:hover { background-color: var(--accent-gold-darker); border-color: var(--accent-gold-darker); color: var(--white); transform: translateY(-3px); box-shadow: 0 6px 10px rgba(0,0,0,0.15); }
+.btn-outline-light { border-color: var(--white); color: var(--white); background-color: transparent; }
+.btn-outline-light:hover { background-color: var(--white); color: var(--primary-purple); }
+.btn-outline-primary { border-color: var(--primary-purple); color: var(--primary-purple); background-color: transparent; }
+.btn-outline-primary:hover { background-color: var(--primary-purple); color: var(--white); }
+.btn-outline-gold { border-color: var(--accent-gold); color: var(--accent-gold); background-color: transparent; }
+.btn-outline-gold:hover { background-color: var(--accent-gold); color: var(--dark-text); }
+
+/* --- Cards --- */
+.card { border: none; border-radius: 0.5rem; transition: transform 0.3s ease, box-shadow 0.3s ease; background-color: var(--white); }
+/* General card hover, excluding swiper slides as their hover is handled by swiper shadows/effects */
+.card:hover:not(.leader-card-main):not(.swiper-slide .card) { 
+    transform: translateY(-5px); 
+    box-shadow: var(--card-hover-shadow); 
+}
+.event-card .card-title, .sermon-card .card-title, .ministry-card .card-title, .leader-card-tier2 .card-title { color: var(--primary-purple); font-weight: 600; margin-top: 0.5rem; }
+.event-card-featured .badge.bg-gold { background-color: var(--accent-gold) !important; color: var(--dark-text) !important; font-weight: 600; padding: 0.4em 0.7em; }
+.ministry-card-icon-bg { background-color: var(--light-purple-bg); min-height: 150px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem; }
+.ministry-card-icon-bg i { color: var(--primary-purple); opacity: 0.7; }
+.placeholder-text-sm, .placeholder-text-sm_detail { font-size: 0.85rem; color: #6c757d; }
+.placeholder-text-sm_detail { font-style: italic; }
+.placeholder-image-container { display: flex; align-items: center; justify-content: center; text-align: center; font-style: italic; color: var(--secondary-purple); background-color: var(--light-purple-bg); border-bottom: 1px solid #ddd; }
+.card-img-top.placeholder-image-container { border-top-left-radius: calc(0.5rem - 1px); border-top-right-radius: calc(0.5rem - 1px); }
+
+/* --- "I'm New Here?" Section --- */
+.new-here-section { background-color: var(--off-white-bg); }
+.new-here-section .fa-li { padding-top: 0.25em; }
+
+/* --- CTA Section --- */
+.cta-section { background-color: var(--primary-purple); }
+.cta-section h2 { color: var(--white); }
+
+/* --- Leadership Page Specific --- */
+.leader-profile-section .section-title-gold { font-size: 2.5rem; }
+.leader-card-main { border: 1px solid var(--light-purple-bg); overflow: hidden; }
+.leader-photo-main.placeholder-image-container { width: 220px !important; height: 220px !important; border: 4px solid var(--accent-gold) !important;}
+.first-lady-info-main { display: flex; align-items: center; }
+.first-lady-photo-main.placeholder-image-container { width: 90px !important; height: 90px !important; border: 3px solid var(--accent-gold-light) !important; }
+.leader-name-main { color: var(--primary-purple); font-weight: 700; font-size: 1.75rem; }
+.leader-title-prominent { font-size: 1.15rem; color: var(--secondary-purple); font-style: italic; }
+.first-lady-name-main { font-weight: 600; color: var(--secondary-purple); margin-bottom: 0.1rem; font-size: 1.1rem; }
+.first-lady-title-main { font-size: 0.95rem; color: var(--dark-text); }
+.bio-placeholder { font-style: italic; color: #555; font-size: 0.95rem; line-height: 1.6; }
+
+/* Styles for cards used within Swiper (Bishops, Ministries) */
+.leader-card-tier2, .ministry-leader-card, .ministry-card { 
+    border: 1px solid #eee; 
+    background-color: transparent !important; /* CHANGED: Make card background transparent */
+    box-shadow: none !important; /* CHANGED: Remove individual card shadow if transparent, relies on slideShadows from Swiper */
+}
+.leader-card-tier2 .card-body, 
+.ministry-leader-card .card-body,
+.ministry-card .card-body {
+    /* If card background is transparent, text might need a subtle shadow or ensure page background provides enough contrast */
+    /* For now, assuming page background is light enough for dark text */
+}
+
+.leader-card-tier2 .leader-photo-tier2.placeholder-image-container { height: 220px !important; }
+.leader-name-tier2 { color: var(--primary-purple); font-weight: 600; font-size: 1.4rem; }
+.leader-title-secondary { font-size: 1rem; color: var(--dark-text); }
+.first-lady-info-tier2 { display: flex; align-items: center; justify-content: center; }
+.first-lady-photo-tier2.placeholder-image-container {width: 60px !important; height: 60px !important; border: 2px solid var(--accent-gold-light) !important; }
+.first-lady-name-tier2 { font-size: 0.9rem; font-weight: 500; margin-left: 0.5rem; }
+.bio-placeholder-sm { font-style: italic; color: #6c757d; font-size: 0.9rem; }
+
+
+/* --- Swiper.js Cover Flow Styles --- */
+.swiper { 
+    width: 100%;
+    padding-top: 20px; 
+    padding-bottom: 50px; 
+    position: relative; 
+}
+
+.swiper-slide {
+    background-position: center;
+    background-size: cover;
+    width: 300px; /* Base width for slides, Swiper adjusts with slidesPerView: 'auto' */
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    /* To ensure the card inside is clickable and hover works for pause */
+    cursor: grab; 
+}
+.swiper-slide .card { 
+    width: 100%; 
+    max-width: 300px; /* Max width of the card itself */
+    min-height: 420px; 
+    margin: auto; 
+    /* background-color: var(--white); Initially white, now transparent */
+    border-radius: 0.5rem; /* Keep card rounding if desired */
+    /* If background is transparent, the card's own shadow might be less relevant */
+    /* box-shadow: none; */ /* Rely on swiper's slideShadows if enabled in JS */
+    overflow: hidden; /* Good for rounded corners on images */
+}
+
+/* Swiper adds shadows if slideShadows: true is set in JS. 
+   These can be styled if needed, e.g. .swiper-slide-shadow-left, .swiper-slide-shadow-right */
+.swiper-slide-shadow-left,
+.swiper-slide-shadow-right,
+.swiper-slide-shadow-top,
+.swiper-slide-shadow-bottom {
+    background: rgba(0, 0, 0, 0.15); /* Softer shadow for coverflow */
+}
+
+
+/* Custom Swiper Navigation Arrows */
+.swiper-button-prev,
+.swiper-button-next {
+    color: var(--primary-purple);
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 50%;
+    width: 44px; 
+    height: 44px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    z-index: 10; 
+    top: 50%; 
+    transform: translateY(-50%);
+}
+.swiper-button-prev::after,
+.swiper-button-next::after {
+    font-size: 1.2rem; 
+    font-weight: 900;
+}
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+    background-color: var(--primary-purple);
+    color: var(--white);
+    transform: translateY(-50%) scale(1.1); /* Keep Y transform, add scale */
+}
+
+.bishops-swiper-button-prev, .about-ministries-swiper-button-prev, .ministries-swiper-button-prev { left: 5px; }
+.bishops-swiper-button-next, .about-ministries-swiper-button-next, .ministries-swiper-button-next { right: 5px; }
+@media (min-width: 768px) {
+    .bishops-swiper-button-prev, .about-ministries-swiper-button-prev, .ministries-swiper-button-prev { left: 15px; }
+    .bishops-swiper-button-next, .about-ministries-swiper-button-next, .ministries-swiper-button-next { right: 15px; }
+}
+
+/* Custom Swiper Pagination */
+.swiper-pagination {
+    position: absolute;
+    bottom: 10px !important; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto !important;
+}
+.swiper-pagination-bullet {
+    background-color: var(--primary-purple);
+    opacity: 0.5;
+    width: 10px;
+    height: 10px;
+    margin: 0 5px !important;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+.swiper-pagination-bullet-active {
+    background-color: var(--accent-gold);
+    opacity: 1;
+    width: 12px; 
+    height: 12px;
+}
+
+.bishops-swiper, .about-ministries-swiper, .ministries-swiper {
+    overflow: hidden; /* Important for Swiper to clip slides correctly */
+}
+
+
+/* --- Calendar & Media Page --- */
+.calendar-card, .live-stream-card, .past-sermons-card { border: 1px solid var(--light-purple-bg); }
+.live-stream-player-container .alert, .youtube-playlist-container .alert { min-height: 450px; }
+.google-calendar-embed-container iframe { min-height: 600px; border-radius: 0.25rem;}
+.youtube-playlist-container iframe { border-radius: 0.25rem; }
+
+/* --- Contact Form --- */
+.contact-form-card { border: 1px solid var(--light-purple-bg); }
+.contact-form-card .form-control-lg { padding: 0.75rem 1.25rem; font-size: 1rem; }
+
+/* --- Footer --- */
+.main-footer { background-color: var(--secondary-purple); }
+.main-footer a:not(.btn) { color: var(--light-purple-bg); text-decoration: none; transition: color 0.2s ease; }
+.main-footer a:not(.btn):hover { color: var(--white); text-decoration: underline; }
+.main-footer .footer-brand-text { color: var(--accent-gold); }
+.main-footer hr { border-top: 1px solid rgba(255,255,255,0.15); }
+.main-footer p { font-size: 0.95rem; }
+.main-footer h5 { color: var(--white); }
+
+/* --- Animation Scroll Offset --- */
+.animate__animated[data-scroll-offset] { visibility: hidden; }
+
+/* Responsive Map Container */
+.map-responsive { overflow: hidden; padding-bottom: 75%; position: relative; height: 0; border-radius: 0.3rem; }
+.map-responsive iframe { left: 0; top: 0; height: 100%; width: 100%; position: absolute; }
