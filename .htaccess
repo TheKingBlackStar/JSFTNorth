@@ -1,0 +1,8 @@
+# Serve index.html as the default document
+DirectoryIndex index.html index.htm
+
+# Safety: allow normal file/dir access; no forced redirect to about.html
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
