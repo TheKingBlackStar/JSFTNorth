@@ -27,9 +27,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Navbar active state (no redirects)
     document.querySelectorAll('.navbar .nav-link').forEach(a => {
-        const here = location.pathname.split('/').pop() || 'index.html';
-        const target = a.getAttribute('href');
-        a.classList.toggle('active', target === here);
+        const here = location.pathname.split('/').pop() || '';
+        const target = a.getAttribute('href').replace('/', '');
+        a.classList.toggle('active', target === here || (here === '' && target === ''));
     });
 
     const contactForm = document.getElementById('contactForm');
