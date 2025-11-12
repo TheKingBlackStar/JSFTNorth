@@ -25,20 +25,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    const currentPath = window.location.pathname.split("/").pop() || "index.html";
-    const navLinks = document.querySelectorAll('.main-navbar .nav-link');
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        const linkPath = link.getAttribute('href').split("/").pop();
-        if (linkPath === currentPath) link.classList.add('active');
+    // Navbar active state (no redirects)
+    document.querySelectorAll('.navbar .nav-link').forEach(a => {
+        const here = location.pathname.split('/').pop() || '';
+        const target = a.getAttribute('href').replace('/', '');
+        a.classList.toggle('active', target === here || (here === '' && target === ''));
     });
-    if (currentPath === "index.html" || currentPath === "") {
-        const homeLink = document.querySelector('.main-navbar .nav-link[href="index.html"]');
-        if(homeLink && !homeLink.classList.contains('active')) { 
-            navLinks.forEach(link => link.classList.remove('active'));
-            homeLink.classList.add('active');
-        }
-    }
 
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {

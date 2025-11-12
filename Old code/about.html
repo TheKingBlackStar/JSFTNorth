@@ -16,20 +16,19 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm main-navbar">
         <div class="container">
-            <a class="navbar-brand church-brand-text" href="index.html">JSTF North</a>
+            <a class="navbar-brand church-brand-text" href="/">JSTF North</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="mainNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="about.html">About Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="leadership.html">Leadership</a></li>
-                    <li class="nav-item"><a class="nav-link" href="ministries.html">Ministries</a></li>
-                    <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
-                    <li class="nav-item"><a class="nav-link" href="sermons.html">Sermons/Media</a></li>
-                    <li class="nav-item"><a class="nav-link" href="calendars.html">Calendars</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Visit & Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="/about">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/leadership">Leadership</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/ministries">Ministries</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/events">Events</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/sermons">Sermons/Media</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">Visit & Contact</a></li>
                 </ul>
             </div>
         </nav>
@@ -85,25 +84,29 @@
 
         <section id="ministry-leaders-about" class="py-4 animate__animated animate__fadeInUp" data-scroll-offset="100">
             <h2 class="section-title text-center mb-4">Meet Our Ministry Team</h2>
-            <p class="text-center lead mb-4">These dedicated individuals lead various ministries. (More details on our <a href="ministries.html">Ministries Page</a>!)</p>
+                                <p class="text-center lead mb-4">These dedicated individuals lead various ministries. (More details on our <a href="/ministries">Ministries Page</a>!)</p>
             
             <div class="swiper about-ministries-swiper mt-4">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
                         <div class="card h-100 text-center ministry-leader-card shadow-sm"> 
-                            <div class="placeholder-image-container card-img-top" style="height:200px; background-color:#E9D5FF; display:flex; align-items:center; justify-content:center; text-align:center; color:#703ABD;"><i>Youth Leaders Photo</i></div>
-                            <div class="card-body">
+                        <img src="./Assets/Caryssa.jpg" 
+                            alt="Youth Leaders Photo" 
+                            class="card-img-top" 
+                            style="height:200px; object-fit:cover;"/>                            <div class="card-body">
                                 <i class="fas fa-child fa-2x text-primary mb-2 d-block d-md-none"></i>
-                                <h5 class="card-title">Youth Leaders</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">Bro Chris & Sis Caryssa</h6>
+                                <h5 class="card-title">Youth Leader</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">Sis Caryssa</h6>
                                 <p class="card-text small"><i>(Events, teaching kids, outings.)</i></p>
                             </div>
                         </div>
                     </div>
                     <div class="swiper-slide">
                         <div class="card h-100 text-center ministry-leader-card shadow-sm">
-                            <div class="placeholder-image-container card-img-top" style="height:200px; background-color:#E9D5FF; display:flex; align-items:center; justify-content:center; text-align:center; color:#703ABD;"><i>Media Leader Photo</i></div>
-                            <div class="card-body">
+                            <img src="./Assets/Phil.jpg" 
+                                alt="Sound & Media Leader" 
+                                class="card-img-top" 
+                                style="height:200px; object-fit:cover;"/>                            <div class="card-body">
                                  <i class="fas fa-volume-up fa-2x text-primary mb-2 d-block d-md-none"></i>
                                 <h5 class="card-title">Sound & Media Leader</h5>
                                 <h6 class="card-subtitle mb-2 text-muted">Min Phillip Gresham</h6>
@@ -113,7 +116,11 @@
                     </div>
                     <div class="swiper-slide">
                         <div class="card h-100 text-center ministry-leader-card shadow-sm">
-                             <div class="placeholder-image-container card-img-top" style="height:200px; background-color:#E9D5FF; display:flex; align-items:center; justify-content:center; text-align:center; color:#703ABD;"><i>Music Leader Photo</i></div>
+                            <img src="./Assets/Pastor Ed.jpg" 
+                                alt="Music Leader Photo" 
+                                class="card-img-top" 
+                                style="height:200px; object-fit:cover; object-position: top center;"/>
+
                             <div class="card-body">
                                 <i class="fas fa-music fa-2x text-primary mb-2 d-block d-md-none"></i>
                                 <h5 class="card-title">Music Leader</h5>
@@ -122,9 +129,14 @@
                             </div>
                         </div>
                     </div>
+
+
                     <div class="swiper-slide">
                         <div class="card h-100 text-center ministry-leader-card shadow-sm">
-                            <div class="placeholder-image-container card-img-top" style="height:200px; background-color:#E9D5FF; display:flex; align-items:center; justify-content:center; text-align:center; color:#703ABD;"><i>Food Leader Photo</i></div>
+                            <img src="./Assets/Kim.jpg" 
+                                        alt="Music Leader Photo" 
+                                        class="card-img-top" 
+                                        style="height:200px; object-fit:cover; object-position: top center;"/>
                             <div class="card-body">
                                  <i class="fas fa-utensils fa-2x text-primary mb-2 d-block d-md-none"></i>
                                 <h5 class="card-title">Food Committee Leader</h5>
@@ -135,7 +147,10 @@
                     </div>
                     <div class="swiper-slide">
                         <div class="card h-100 text-center ministry-leader-card shadow-sm">
-                            <div class="placeholder-image-container card-img-top" style="height:200px; background-color:#E9D5FF; display:flex; align-items:center; justify-content:center; text-align:center; color:#703ABD;"><i>Finance Leader Photo</i></div>
+                            <img src="./Assets/Kim and husband.jpeg" 
+                                        alt="Music Leader Photo" 
+                                        class="card-img-top" 
+                                        style="height:200px; object-fit:cover; object-position: top center;"/>
                              <div class="card-body">
                                 <i class="fas fa-hand-holding-usd fa-2x text-primary mb-2 d-block d-md-none"></i>
                                 <h5 class="card-title">Financial Leader</h5>
@@ -160,16 +175,16 @@
                 </div>
                 <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
                     <h5 class="text-uppercase mb-4 fw-bold">Quick Links</h5>
-                    <p><a href="about.html" class="text-white">About Us</a></p>
-                    <p><a href="leadership.html" class="text-white">Leadership</a></p>
-                    <p><a href="sermons.html" class="text-white">Sermons</a></p>
-                    <p><a href="events.html" class="text-white">Events</a></p>
+                                            <p><a href="/about" class="text-white">About Us</a></p>
+                        <p><a href="/leadership" class="text-white">Leadership</a></p>
+                        <p><a href="/sermons" class="text-white">Sermons</a></p>
+                        <p><a href="/events" class="text-white">Events</a></p>
                 </div>
                 <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
                     <h5 class="text-uppercase mb-4 fw-bold">Get Involved</h5>
-                    <p><a href="ministries.html" class="text-white">Ministries</a></p>
-                    <p><a href="contact.html#visit" class="text-white">Plan a Visit</a></p>
-                    <p><a href="contact.html#prayer" class="text-white">Prayer Requests</a></p>
+                                            <p><a href="/ministries" class="text-white">Ministries</a></p>
+                                            <p><a href="/contact#visit" class="text-white">Plan a Visit</a></p>
+                        <p><a href="/contact#prayer" class="text-white">Prayer Requests</a></p>
                 </div>
                 <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
                     <h5 class="text-uppercase mb-4 fw-bold">Contact</h5>
