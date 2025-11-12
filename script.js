@@ -1,231 +1,282 @@
-// JSTF North - script.js (Focus: Stable Featured Events, then review Swiper speeds)
+// calendars.js — JSTF North Calendar (Read-only, Updated for Kids Events)
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log("DEBUG: JSTF North Script Loaded - V_STABLE_FEATURED_EVENTS");
+// =====================
+// CONFIGURATION
+// =====================
+const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbwS9Xy-mIfjlFQaAEQe1Q1v_uIMtMPzvMx6W-o0hPdu-10M2AVJ3rierG9otEGxucGO/exec";
+const USE_SERVER = !!GAS_ENDPOINT && GAS_ENDPOINT !== "PASTE_YOUR_DEPLOYED_WEB_APP_URL_HERE";
+const SYNC_INTERVAL = 60000; // 60s refresh
 
-    const featuredEventsGoogleSheetUrl = 'https://script.google.com/macros/s/AKfycbx90SqZG78lyWVnLPmBXeiSRmPzfYvhTsWV8j-8XgtgU4rDdseY2gqkMpf5lLYI2Dpn/exec';
+// Color mapping for each category
+const colorMap = {
+  food: "#FF6B6B",
+  transportation: "#4ECDC4",
+  kids_events: "#95E1D3",
+  activities: "#FFD93D"
+};
 
-    // Footer Year, Smooth Scroll, Active Nav, Contact Form (Keep as is from last working version)
-    const yearSpan = document.getElementById('current-year');
-    if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+// Normalize category keys
+function normalizeCategory(cat) {
+  if (!cat) return "food";
+  const c = String(cat).toLowerCase().trim();
+  if (c === "kids events" || c === "kids" || c === "volunteers") return "kids_events";
+  return c.replace(/\s+/g, "_");
+}
 
-    document.querySelectorAll('a[href^="#"]:not([data-bs-toggle])').forEach(anchor => { 
-        anchor.addEventListener('click', function (e) {
-            const targetId = this.getAttribute('href');
-            if (targetId.length > 1 && targetId.startsWith('#')) {
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    e.preventDefault(); 
-                    const navbarHeight = document.querySelector('.main-navbar')?.offsetHeight || 70; 
-                    const elementPosition = targetElement.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
-                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-                }
-            }
-        });
+document.addEventListener("DOMContentLoaded", () => {
+  const calendarState = {
+    currentDate: new Date(),
+    selectedDate: new Date(),
+    activeCalendar: "all",
+    events: {
+      food: [],
+      transportation: [],
+      kids_events: [],
+      activities: []
+    },
+    syncing: false
+  };
+
+  init();
+
+  function init() {
+    bindUI();
+    loadEvents();
+    renderCalendar();
+    updateSelectedDateLabel();
+
+    if (USE_SERVER && SYNC_INTERVAL > 0) {
+      setInterval(() => loadEvents(), SYNC_INTERVAL);
+    }
+  }
+
+  // =====================
+  // UI Event Bindings
+  // =====================
+  function bindUI() {
+    document.querySelectorAll(".calendar-tab").forEach(tab => {
+      tab.addEventListener("click", function () {
+        const cal = this.getAttribute("data-calendar");
+        switchCalendar(cal);
+      });
     });
 
-    const currentPath = window.location.pathname.split("/").pop() || "index.html";
-    const navLinks = document.querySelectorAll('.main-navbar .nav-link');
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        const linkPath = link.getAttribute('href').split("/").pop();
-        if (linkPath === currentPath) link.classList.add('active');
+    document.getElementById("prevMonth").addEventListener("click", () => {
+      calendarState.currentDate.setMonth(calendarState.currentDate.getMonth() - 1);
+      renderCalendar();
     });
-    if (currentPath === "index.html" || currentPath === "") {
-        const homeLink = document.querySelector('.main-navbar .nav-link[href="index.html"]');
-        if(homeLink && !homeLink.classList.contains('active')) { 
-            navLinks.forEach(link => link.classList.remove('active'));
-            homeLink.classList.add('active');
-        }
+
+    document.getElementById("nextMonth").addEventListener("click", () => {
+      calendarState.currentDate.setMonth(calendarState.currentDate.getMonth() + 1);
+      renderCalendar();
+    });
+  }
+
+  function switchCalendar(type) {
+    calendarState.activeCalendar = type;
+    document.querySelectorAll(".calendar-tab").forEach(t => t.classList.remove("active"));
+    const btn = document.querySelector(`.calendar-tab[data-calendar="${type}"]`);
+    if (btn) btn.classList.add("active");
+    renderCalendar();
+    updateEventsList();
+  }
+
+  // =====================
+  // Rendering Logic
+  // =====================
+  function renderCalendar() {
+    const year = calendarState.currentDate.getFullYear();
+    const month = calendarState.currentDate.getMonth();
+
+    document.getElementById("monthYear").textContent = calendarState.currentDate.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+    const container = document.getElementById("calendarDays");
+    container.innerHTML = "";
+
+    // Previous month filler
+    for (let i = firstDay - 1; i >= 0; i--) {
+      const el = createDayCell(daysInPrevMonth - i, true);
+      container.appendChild(el);
     }
 
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        const submitButton = contactForm.querySelector('button[type="submit"]');
-        const formStatus = document.getElementById('formStatus'); 
-        const loadingSpinner = contactForm.querySelector('#loadingSpinner');
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            if (submitButton) submitButton.disabled = true;
-            if (loadingSpinner) loadingSpinner.style.display = 'inline-block'; 
-            if (formStatus) formStatus.innerHTML = ''; 
-            const formData = new FormData(contactForm);
-            const currentDate = new Date();
-            formData.append('submissionDate', currentDate.toDateString());
-            formData.append('submissionTime', currentDate.toLocaleTimeString());
-            fetch(contactForm.action, { method: 'POST', body: formData })
-            .then(response => {
-                if (response.ok || (response.type === 'opaque' && response.redirected) || response.status === 200) { return response.text(); }
-                return response.text().then(text => { throw new Error(`Form submission failed: ${response.status} ${text||""}`); });
-            })
-            .then(data => {
-                if (formStatus) formStatus.innerHTML = '<div class="alert alert-success mt-3">Thank you! Message sent.</div>';
-                contactForm.reset();
-            })
-            .catch(error => {
-                if (formStatus) formStatus.innerHTML = `<div class="alert alert-danger mt-3">Error: ${error.message}</div>`;
-                console.error('Form Error:', error);
-            })
-            .finally(() => {
-                if (submitButton) submitButton.disabled = false;
-                if (loadingSpinner) loadingSpinner.style.display = 'none'; 
-            });
+    const today = new Date();
+    for (let d = 1; d <= daysInMonth; d++) {
+      const date = new Date(year, month, d);
+      const el = createDayCell(d, false, date);
+
+      if (date.toDateString() === today.toDateString()) el.classList.add("today");
+      if (date.toDateString() === calendarState.selectedDate.toDateString()) el.classList.add("selected");
+
+      el.addEventListener("click", () => {
+        calendarState.selectedDate = date;
+        renderCalendar();
+        updateSelectedDateLabel();
+        updateEventsList();
+      });
+
+      container.appendChild(el);
+    }
+
+    // Fill remaining grid
+    const totalCells = container.children.length;
+    const remaining = 42 - totalCells;
+    for (let d = 1; d <= remaining; d++) {
+      const el = createDayCell(d, true);
+      container.appendChild(el);
+    }
+
+    updateEventsList();
+  }
+
+  function createDayCell(dayNum, isOtherMonth = false, dateObj = null) {
+    const cell = document.createElement("div");
+    cell.className = "calendar-day";
+    if (isOtherMonth) cell.classList.add("other-month");
+
+    const num = document.createElement("div");
+    num.className = "day-number";
+    num.textContent = dayNum;
+    cell.appendChild(num);
+
+    if (dateObj && !isOtherMonth) {
+      const dateStr = formatDate(dateObj);
+      const dayEvents = [];
+
+      Object.keys(calendarState.events).forEach(cat => {
+        calendarState.events[cat].forEach(ev => {
+          if (ev.date === dateStr) dayEvents.push({ ...ev, category: cat });
         });
-    }
-    
-    // Global Intersection Observer
-    let siteObserver;
-    if ("IntersectionObserver" in window) {
-        const observerCallback = (entries, observerInstance) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.visibility = 'visible';
-                    const animationName = entry.target.dataset.animationNameStored || 'animate__fadeInUp';
-                    entry.target.classList.add(animationName);
-                    observerInstance.unobserve(entry.target); 
-                }
-            });
-        };
-        window.siteObserver = new IntersectionObserver(observerCallback, { threshold: 0.15 });
-        document.querySelectorAll('.animate__animated[data-scroll-offset]').forEach(el => {
-            const animationName = Array.from(el.classList).find(cls => cls.startsWith('animate__') && !['animate__animated'].includes(cls));
-            if (animationName) { el.dataset.animationNameStored = animationName; el.classList.remove(animationName); }
-            else { el.dataset.animationNameStored = 'animate__fadeInUp'; }
-            window.siteObserver.observe(el); 
+      });
+
+      if (dayEvents.length > 0) {
+        const dotsWrap = document.createElement("div");
+        dotsWrap.className = "day-events";
+
+        dayEvents.slice(0, 3).forEach(ev => {
+          const dot = document.createElement("div");
+          dot.className = "event-dot";
+          dot.style.backgroundColor = colorMap[normalizeCategory(ev.category)] || "#999";
+          dotsWrap.appendChild(dot);
         });
-    } else { 
-        document.querySelectorAll('.animate__animated[data-scroll-offset]').forEach(el => { el.style.visibility = 'visible'; });
-    }
-    
-    // --- Swiper.js Initializations (Using settings that previously worked for coverflow look) ---
-    const swiperSpeedSetting = 800; // For manual clicks
-    const swiperAutoplayDelaySetting = 3500; // Pause between slides
 
-    const commonCoverFlowOptions = {
-        effect: 'coverflow', grabCursor: true, centeredSlides: true, loop: true, 
-        speed: swiperSpeedSetting, 
-        autoplay: { delay: swiperAutoplayDelaySetting, disableOnInteraction: false, pauseOnMouseEnter: true },
-        coverflowEffect: { rotate: 25, stretch: -15, depth: 100, modifier: 1, slideShadows: true },
-        slidesPerView: 'auto', 
-        breakpoints: {
-            320: { slidesPerView: 1, spaceBetween: 5, coverflowEffect: { rotate: 0, stretch: 0, depth: 100, modifier: 1, slideShadows: false }, speed: 500 },
-            768: { slidesPerView: 3, spaceBetween: -20, coverflowEffect: { rotate: 25, stretch: -20, depth: 100, modifier: 1 }, speed: swiperSpeedSetting },
-            992: { slidesPerView: 3, spaceBetween: -30, coverflowEffect: { rotate: 25, stretch: -40, depth: 120, modifier: 1 }, speed: swiperSpeedSetting }
+        if (dayEvents.length > 3) {
+          const more = document.createElement("div");
+          more.style.fontSize = "0.65rem";
+          more.style.color = "#666";
+          more.textContent = `+${dayEvents.length - 3}`;
+          dotsWrap.appendChild(more);
         }
-    };
-    if (document.querySelector('.bishops-swiper')) { /* ... Swiper for Bishops ... */ 
-        new Swiper('.bishops-swiper', { ...commonCoverFlowOptions, loopedSlides: 4, navigation: { nextEl: '.bishops-swiper-button-next', prevEl: '.bishops-swiper-button-prev' } });
+
+        cell.appendChild(dotsWrap);
+      }
     }
-    if (document.querySelector('.about-ministries-swiper')) { /* ... Swiper for About Ministries ... */ 
-        new Swiper('.about-ministries-swiper', { ...commonCoverFlowOptions, loopedSlides: 5, navigation: { nextEl: '.about-ministries-swiper-button-next', prevEl: '.about-ministries-swiper-button-prev' } });
-    }
-    if (document.querySelector('.ministries-swiper')) { /* ... Swiper for Main Ministries ... */ 
-        new Swiper('.ministries-swiper', { ...commonCoverFlowOptions, loopedSlides: 6, navigation: { nextEl: '.ministries-swiper-button-next', prevEl: '.ministries-swiper-button-prev' }, pagination: { el: '.ministries-swiper-pagination', clickable: true } });
+    return cell;
+  }
+
+  function updateSelectedDateLabel() {
+    const label = calendarState.selectedDate.toLocaleDateString("en-US", {
+      weekday: "long", month: "long", day: "numeric"
+    });
+    document.getElementById("selectedDateDisplay").textContent = label;
+  }
+
+  function updateEventsList() {
+    const list = document.getElementById("eventsList");
+    const dateStr = formatDate(calendarState.selectedDate);
+
+    let items = [];
+    if (calendarState.activeCalendar === "all") {
+      Object.keys(calendarState.events).forEach(cat => {
+        calendarState.events[cat].forEach(ev => {
+          if (ev.date === dateStr) items.push({ ...ev, category: cat });
+        });
+      });
+    } else {
+      const cat = calendarState.activeCalendar;
+      (calendarState.events[cat] || []).forEach(ev => {
+        if (ev.date === dateStr) items.push({ ...ev, category: cat });
+      });
     }
 
-    // --- Featured Events from Google Sheet (Simplified Display - No Conditional Swiper for now) ---
-    function createEventCardHTML_Static(event) { // Renamed for clarity
-        console.log("DEBUG: createEventCardHTML_Static called for:", event.EventTitle);
-        const title = event.EventTitle || "Untitled Event";
-        const badge = event.BadgeText || "";
-        const dateInfo = event.DateInfo || "";
-        const description = event.Description || "No description available.";
-        const imageURL = typeof event.ImageURL === 'string' ? event.ImageURL.trim() : ""; 
-        const imagePlaceholderText = "Event Image";
-        const linkURL = event.LinkURL || "#";
-    
-        const imageHTML = imageURL !== "" ?
-            `<img src="${imageURL}" class="card-img-top" alt="${title}" style="height: 200px; object-fit: cover;">` :
-            `<div class="placeholder-image-container card-img-top" style="height:200px; background-color:#BFACE2; display:flex; align-items:center; justify-content:center; text-align:center; color:#703ABD;"><i>${imagePlaceholderText} for ${title}</i></div>`;
-        
-        // This creates Bootstrap columns directly
-        return `
-            <div class="col-md-6 col-lg-4 mb-4 d-flex align-items-stretch animate__animated animate__fadeInUp" data-scroll-offset="100">
-                <div class="card h-100 shadow-sm event-card-featured">
-                    ${imageHTML}
-                    <div class="card-body d-flex flex-column">
-                        ${badge ? `<span class="badge bg-gold text-dark mb-2">${badge}</span>` : ''}
-                        <h5 class="card-title">${title}</h5>
-                        ${dateInfo ? `<p class="card-text small text-muted"><i class="far fa-calendar-alt me-1"></i> ${dateInfo}</p>` : ''}
-                        <p class="card-text">${description}</p>
-                        <a href="${linkURL}" class="btn btn-outline-primary mt-auto btn-sm">Learn More</a>
-                    </div>
-                </div>
-            </div>
-        `;
+    items.sort((a, b) => {
+      if (!a.time && !b.time) return 0;
+      if (!a.time) return 1;
+      if (!b.time) return -1;
+      return String(a.time).localeCompare(String(b.time));
+    });
+
+    if (items.length === 0) {
+      list.innerHTML = '<p class="text-muted">No events scheduled for this date</p>';
+      return;
     }
-    
-    async function loadFeaturedEvents_Static(containerId, maxEvents = 3) {
-        const container = document.getElementById(containerId); // This ID should be on a 'row' div
-        if (!container) {
-            console.error("DEBUG: Static Featured events container not found for ID:", containerId); 
-            return;
+
+    list.innerHTML = items.map(ev => {
+      const clr = colorMap[normalizeCategory(ev.category)] || "#999";
+      return `
+        <div class="event-card" style="border-left: 4px solid ${clr}">
+          <h6>${escapeHtml(ev.title || "")}</h6>
+          <p>${escapeHtml(ev.description || "No description")}</p>
+          ${ev.time ? `<div class="event-time"><i class="fas fa-clock"></i> ${escapeHtml(ev.time)}</div>` : ""}
+          ${ev.location ? `<div class="event-location"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(ev.location)}</div>` : ""}
+        </div>`;
+    }).join("");
+  }
+
+  // =====================
+  // Load from Server
+  // =====================
+  async function loadEvents() {
+    if (!USE_SERVER || calendarState.syncing) return;
+    calendarState.syncing = true;
+
+    try {
+      const res = await fetch(GAS_ENDPOINT);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+
+      if (!(data && data.status === 200 && data.data && data.data.events)) throw new Error("Invalid server data.");
+
+      Object.keys(calendarState.events).forEach(k => (calendarState.events[k] = []));
+      data.data.events.forEach(ev => {
+        const cat = normalizeCategory(ev.category);
+        if (calendarState.events[cat]) {
+          calendarState.events[cat].push({
+            id: ev.id,
+            date: ev.date,
+            title: ev.title,
+            category: cat,
+            description: ev.description || "",
+            time: ev.time || "",
+            location: ev.location || ""
+          });
         }
-    
-        container.innerHTML = '<div class="col-12 text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p>Loading featured events...</p></div>';
-        console.log("DEBUG: Attempting to load STATIC events for container:", containerId); 
-    
-        try {
-            const response = await fetch(featuredEventsGoogleSheetUrl);
-            console.log("DEBUG: Fetch response status for " + containerId + ":", response.status, response.statusText); 
-    
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP error! status: ${response.status}, statusText: ${response.statusText}, body: ${errorText}`);
-            }
-            const events = await response.json();
-            console.log("DEBUG: Fetched events data for " + containerId + " (RAW):", JSON.stringify(events)); 
-    
-            container.innerHTML = ''; // Clear loading message
-    
-            if (events && Array.isArray(events) && events.length > 0) {
-                let eventsToShow = events.filter(event => String(event.IsActive).toUpperCase().trim() === 'YES');
-                
-                if (containerId === 'featuredEventsContainerHomepage') { // Assuming this ID is for the homepage static display
-                    eventsToShow = eventsToShow.slice(0, maxEvents);
-                }
-                console.log("DEBUG: STATIC Events to show after filtering for " + containerId + ":", eventsToShow);
-    
-                if (eventsToShow.length > 0) {
-                    let allCardsHTML = "";
-                    eventsToShow.forEach(event => {
-                        allCardsHTML += createEventCardHTML_Static(event); // Use static card creator
-                    });
-                    container.innerHTML = allCardsHTML;
-                    console.log("DEBUG: STATIC Final container.innerHTML for " + containerId + " set with " + eventsToShow.length + " cards.");
+      });
 
-                    const newAnimatedElements = container.querySelectorAll('.animate__animated[data-scroll-offset]');
-                    if (newAnimatedElements.length > 0 && "IntersectionObserver" in window && window.siteObserver) { 
-                        newAnimatedElements.forEach(el => {
-                            el.style.visibility = 'hidden';
-                            const animationName = el.dataset.animationNameStored || 'animate__fadeInUp';
-                            el.classList.forEach(cls => { if (cls.startsWith('animate__') && cls !== 'animate__animated') el.classList.remove(cls); });
-                            el.dataset.animationNameStored = animationName; 
-                            window.siteObserver.observe(el); 
-                        });
-                    }
-                } else {
-                    container.innerHTML = '<div class="col-12 text-center"><p>No featured events currently active. Check our <a href="events.html">full calendar</a>!</p></div>';
-                }
-            } else {
-                 container.innerHTML = '<div class="col-12 text-center"><p>No featured events data received from the sheet (or array empty).</p></div>';
-            }
-        } catch (error) {
-            console.error('DEBUG: Error in loadFeaturedEvents_Static for ' + containerId + ':', error); 
-            container.innerHTML = `<div class="col-12 text-center"><p class="text-danger">DEBUG: Could not load events. Error: ${error.message}</p></div>`;
-        }
+      renderCalendar();
+      updateEventsList();
+    } catch (err) {
+      console.error("Error loading:", err);
+    } finally {
+      calendarState.syncing = false;
     }
-    
-    // Load events for homepage (STATIC DISPLAY)
-    // **IMPORTANT**: Ensure index.html has <div id="featuredEventsContainerHomepage" class="row">
-    if (document.getElementById('featuredEventsContainerHomepage')) { 
-        loadFeaturedEvents_Static('featuredEventsContainerHomepage', 3);
-    }
-    // Load events for events page (STATIC DISPLAY)
-    // **IMPORTANT**: Ensure events.html has <div id="featuredEventsContainerEventsPage" class="row">
-    if (document.getElementById('featuredEventsContainerEventsPage')) { 
-        loadFeaturedEvents_Static('featuredEventsContainerEventsPage', 100); 
-    }
+  }
 
-}); // End DOMContentLoaded
+  // =====================
+  // Utility
+  // =====================
+  function formatDate(d) {
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+});
