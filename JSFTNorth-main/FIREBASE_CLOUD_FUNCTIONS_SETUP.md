@@ -47,7 +47,7 @@ Cloud Functions require the Blaze (pay-as-you-go) plan, but it has a **generous 
 ## How to Use After Setup
 
 ### Creating Managers from Admin Panel
-1. Log into your admin panel: `/admin.html`
+1. Log into your admin panel: `/admin`
 2. Scroll to "Create Manager Account" card
 3. Enter manager's email
 4. Create a temporary password
