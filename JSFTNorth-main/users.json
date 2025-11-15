@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "localId": "admin123",
+      "email": "admin@jstfnorth.local",
+      "displayName": "admin",
+      "passwordHash": "Ble$$ed7",
+      "emailVerified": true,
+      "disabled": false
+    }
+  ]
+}

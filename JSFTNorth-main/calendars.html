@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calendars - JSTF North</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="calendars.css">
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm main-navbar">
+    <div class="container">
+      <a class="navbar-brand church-brand-text" href="index.html">JSTF North</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="leadership.html">Leadership</a></li>
+          <li class="nav-item"><a class="nav-link" href="ministries.html">Ministries</a></li>
+          <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="calendars.html">Calendars</a></li>
+          <li class="nav-item" id="admin-nav-link" style="display:none;"><a class="nav-link" href="admin.html">Admin</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Visit & Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero-section text-white text-center d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #703ABD 0%, #50208C 100%); min-height: 250px;">
+    <div class="container hero-content">
+      <h1 class="display-4 fw-bold">Church Calendars</h1>
+      <p class="lead my-3">Stay updated with food schedules, transportation, events, and more</p>
+    </div>
+  </header>
+
+  <section class="py-5 calendars-section">
+    <div class="container">
+
+      <!-- Calendar Selector Tabs -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="calendar-tabs">
+            <button class="calendar-tab active" data-calendar="all" title="All Calendars">
+              <i class="fas fa-layer-group"></i>
+              <span>All</span>
+            </button>
+            <button class="calendar-tab" data-calendar="food" title="Food & Meals Schedule">
+              <i class="fas fa-utensils"></i>
+              <span>Food</span>
+            </button>
+            <button class="calendar-tab" data-calendar="transportation" title="Transportation Schedule">
+              <i class="fas fa-bus"></i>
+              <span>Transportation</span>
+            </button>
+            <button class="calendar-tab" data-calendar="volunteer" title="Volunteer Schedule">
+              <i class="fas fa-hands-helping"></i>
+              <span>Volunteers</span>
+            </button>
+            <button class="calendar-tab" data-calendar="activities" title="Activities & Programs">
+              <i class="fas fa-calendar-check"></i>
+              <span>Activities</span>
+            </button>
+            <button class="calendar-tab" data-calendar="maintenance" title="Maintenance & Setup">
+              <i class="fas fa-tools"></i>
+              <span>Maintenance</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calendar + Sidebar -->
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="calendar-container bg-white rounded shadow-lg p-4">
+            <!-- Calendar Navigation -->
+            <div class="calendar-header d-flex justify-content-between align-items-center mb-4">
+              <button class="btn btn-sm btn-outline-primary" id="prevMonth">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <h3 class="m-0" id="monthYear"></h3>
+              <button class="btn btn-sm btn-outline-primary" id="nextMonth">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+
+            <!-- Day Headers -->
+            <div class="calendar-weekdays">
+              <div class="weekday">Sun</div>
+              <div class="weekday">Mon</div>
+              <div class="weekday">Tue</div>
+              <div class="weekday">Wed</div>
+              <div class="weekday">Thu</div>
+              <div class="weekday">Fri</div>
+              <div class="weekday">Sat</div>
+            </div>
+
+            <!-- Calendar Days -->
+            <div class="calendar-days" id="calendarDays"></div>
+          </div>
+        </div>
+
+        <!-- Sidebar: Event Details -->
+        <div class="col-lg-4">
+          <div class="bg-white rounded shadow-lg p-4 calendar-sidebar">
+            <h4 class="mb-3">
+              <i class="fas fa-list"></i> Events for <span id="selectedDateDisplay">Today</span>
+            </h4>
+            <div id="eventsList" class="events-list">
+              <p class="text-muted">Select a date to view events</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Legend -->
+      <div class="row mt-5">
+        <div class="col-12">
+          <div class="bg-light rounded p-4">
+            <h5 class="mb-3"><i class="fas fa-info-circle"></i> Legend</h5>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="legend-item mb-2">
+                  <span class="legend-color" style="background-color: #FF6B6B;"></span>
+                  <span>Food Schedule</span>
+                </div>
+                <div class="legend-item mb-2">
+                  <span class="legend-color" style="background-color: #4ECDC4;"></span>
+                  <span>Transportation</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="legend-item mb-2">
+                  <span class="legend-color" style="background-color: #95E1D3;"></span>
+                  <span>Volunteer Schedule</span>
+                </div>
+                <div class="legend-item mb-2">
+                  <span class="legend-color" style="background-color: #FFD93D;"></span>
+                  <span>Activities</span>
+                </div>
+                <div class="legend-item mb-2">
+                  <span class="legend-color" style="background-color: #6C63FF;"></span>
+                  <span>Maintenance</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="bg-dark text-light py-5 mt-5">
+    <div class="container">
+      <div class="row mb-4">
+        <div class="col-md-4 mb-3 mb-md-0">
+          <h5 class="footer-brand-text mb-3">JSTF North</h5>
+          <p>Connecting faith, community, and service.</p>
+        </div>
+        <div class="col-md-4">
+          <h6>Quick Links</h6>
+          <ul class="list-unstyled">
+            <li><a href="index.html" class="text-light-hover">Home</a></li>
+            <li><a href="events.html" class="text-light-hover">Events</a></li>
+            <li><a href="contact.html" class="text-light-hover">Contact</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h6>Follow Us</h6>
+          <div class="social-links">
+            <a href="#" class="text-light me-2"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="text-light me-2"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-light"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="text-center">
+        <p>&copy; <span id="current-year"></span> JSTF North. All rights reserved. | <a href="login.html" id="admin-link" style="display:none;">Admin</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script src="script.js"></script>
+  <script type="module" src="calendars-firebase.js"></script>
+  <script type="module" src="auth-nav.js"></script>
+</body>
+</html>
