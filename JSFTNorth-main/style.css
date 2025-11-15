@@ -255,7 +255,7 @@ a:hover {
 .swiper-slide {
     background-position: center;
     background-size: cover;
-    width: 300px; /* Base width for slides, Swiper adjusts with slidesPerView: 'auto' */
+    width: 330px; /* Slightly wider for readability with 3D */
     display: flex; 
     justify-content: center;
     align-items: center;
@@ -264,7 +264,7 @@ a:hover {
 }
 .swiper-slide .card { 
     width: 100%; 
-    max-width: 300px; /* Max width of the card itself */
+    max-width: 330px; /* Match slide width */
     min-height: 420px; 
     margin: auto; 
     /* background-color: var(--white); Initially white, now transparent */
@@ -280,7 +280,7 @@ a:hover {
 .swiper-slide-shadow-right,
 .swiper-slide-shadow-top,
 .swiper-slide-shadow-bottom {
-    background: rgba(0, 0, 0, 0.15); /* Softer shadow for coverflow */
+    background: rgba(0, 0, 0, 0.08); /* Lighter shadow for cleaner, fully-visible slides */
 }
 
 
